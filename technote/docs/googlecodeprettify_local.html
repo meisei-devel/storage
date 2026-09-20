@@ -1,0 +1,55 @@
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+
+<link rel="stylesheet" href="./google-code-prettify/skins/sons-of-obsidian.css">
+<script src="./google-code-prettify/prettify.js"></script> 
+<script src="./google-code-prettify/lang-css.js"></script>
+<script src="./google-code-prettify/lang-sql.js"></script>
+<script>
+  window.addEventListener("load", function() {
+    PR.prettyPrint();
+  });
+</script>
+
+<style type="text/css">
+.prettyprint ol.linenums > li {
+  list-style-type: decimal;
+}
+
+pre {
+  padding: 5px 5px 5px 0px;
+}
+</style>
+
+<title>ソースコードハイライトサンプル</title>
+</head>
+
+<body>
+<pre class="prettyprint linenums lang-cpp">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+int main(void) {
+
+  unsigned char buf[8192];
+  int len;
+
+  fprintf(stdout, &quot;---BEGIN DATA CONTENTS---\n&quot;);
+
+  while (1) {
+    len = fread(buf, 1, sizeof(buf), stdin);
+    if (len &lt;= 0) {
+      break;
+    }
+    fwrite(buf, len, 1, stdout);
+  }
+
+  fprintf(stdout, &quot;---END DATA CONTENTS---\n&quot;);
+
+  return 0;
+}
+</pre>
+</body>
+</html>

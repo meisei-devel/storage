@@ -1,0 +1,72 @@
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script>
+<!-- and it's easy to individually load additional languages -->
+<script charset="UTF-8" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/languages/go.min.js"></script>
+<script>
+    hljs.configure({tabReplace:'    '});
+    hljs.initHighlightingOnLoad();
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlightjs-line-numbers.js/2.7.0/highlightjs-line-numbers.min.js"></script>
+<script>
+    hljs.initLineNumbersOnLoad();
+</script>
+<style type="text/css">
+/* for block of numbers */
+td.hljs-ln-numbers {
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    text-align: center;
+    color: #ccc;
+    border-right: 1px solid #CCC;
+    vertical-align: top;
+    padding-right: 5px;
+
+    /* your custom style here */
+}
+
+/* for block of code */
+td.hljs-ln-code {
+    padding-left: 10px !important;
+}
+</style>
+
+<title>ソースコードハイライトサンプル</title>
+</head>
+
+<body>
+<pre><code class="h++">#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+int main(void) {
+
+  unsigned char buf[8192];
+  int len;
+
+  fprintf(stdout, &quot;---BEGIN DATA CONTENTS---\n&quot;);
+
+  while (1) {
+    len = fread(buf, 1, sizeof(buf), stdin);
+    if (len &lt;= 0) {
+      break;
+    }
+    fwrite(buf, len, 1, stdout);
+  }
+
+  fprintf(stdout, &quot;---END DATA CONTENTS---\n&quot;);
+
+  return 0;
+}
+</code></pre>
+</body>
+</html>

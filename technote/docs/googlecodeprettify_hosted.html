@@ -1,0 +1,47 @@
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+
+<script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js?skin=sons-of-obsidian&lang=css&lang=sql"></script>
+
+<style type="text/css">
+.prettyprint ol.linenums > li {
+  list-style-type: decimal;
+}
+
+pre {
+  padding: 5px 5px 5px 0px;
+}
+</style>
+
+<title>ソースコードハイライトサンプル</title>
+</head>
+
+<body>
+<pre class="prettyprint linenums lang-cpp">
+#include &lt;stdio.h&gt;
+#include &lt;stdlib.h&gt;
+#include &lt;string.h&gt;
+
+int main(void) {
+
+  unsigned char buf[8192];
+  int len;
+
+  fprintf(stdout, &quot;---BEGIN DATA CONTENTS---\n&quot;);
+
+  while (1) {
+    len = fread(buf, 1, sizeof(buf), stdin);
+    if (len &lt;= 0) {
+      break;
+    }
+    fwrite(buf, len, 1, stdout);
+  }
+
+  fprintf(stdout, &quot;---END DATA CONTENTS---\n&quot;);
+
+  return 0;
+}
+</pre>
+</body>
+</html>

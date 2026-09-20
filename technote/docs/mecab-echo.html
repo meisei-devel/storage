@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+    <title>MecabEcho</title>
+
+<style type="text/css">
+
+body {
+  word-break: break-all;
+  word-wrap: break-word;
+  margin: 15px;
+}
+
+textarea {
+  line-height: 1.0rem !important;
+}
+
+.artpost_ta {
+  font-size: 14px !important;
+  font-family: initial !important;
+}
+
+</style>
+
+    <!-- Optional JavaScript -->
+    <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+  </head>
+
+  <body class="container-fluid">
+
+<main>
+
+<div id="guide" class="row">
+  <div class="col-12">
+<a href="https://taku910.github.io/mecab/">形態素解析エンジンMecab</a>への入力への結果をそのまま返すBot、MecabEcho。<br>
+何か文章を入力してください。
+  </div>
+</div>
+
+<div class="row px-3">
+  <div id="history" class="col-12"></div>
+</div>
+
+<div class="d-flex w-100 py-2 align-items-center form-group">
+  <textarea id="mecab_ta" rows="2" style="width: 100%;" class="form-control"></textarea> <button id="mecab_bt" type="button" class="btn-danger mx-1 px-4 py-2 text-nowrap rounded">送信</button>
+</div>
+
+<script>
+      //<![CDATA[
+      function adjustTextArea(textarea) {
+        var lineHeight = parseInt(textarea.css("lineHeight"));
+        var lines = (textarea.val() + "\n").match(/\n/g).length;
+        if (lines < 2) lines = 2;
+        textarea.height(lineHeight * lines);
+      }
+
+      $("#mecab_ta").on("input", function(e) {
+        adjustTextArea($(this));
+      });
+
+      $("#mecab_bt").on("click", function() {
+        trimingForm("mecab_ta");
+        var mecab_ta = $("#mecab_ta").val();
+        if (mecab_ta.length <= 0) return;
+        mecab_ta = mecab_ta.replace(/\r\n/g, "\n");
+        var disp_mecab_ta = escape_html(mecab_ta);
+        disp_mecab_ta = disp_mecab_ta.replace(/\n/g, "<br>");
+
+        //$("#guide").html("");
+
+        var history = $("#history").html();
+        history +=
+          '<div class="row py-2">' +
+          '<div class="col-3"><\/div>' +
+          '<div class="col-9 rounded" style="border: 1px solid #ff0000;">' +
+          disp_mecab_ta +
+          "<\/div>" +
+          "<\/div>";
+        $("#history").html(history);
+
+        $("#mecab_ta").val("");
+        adjustTextArea($("#mecab_ta"));
+
+        //$(window).scrollTop($("#mecab_bt").offset().top);
+
+        var query = "mecab_ta=" + encodeURIComponent(mecab_ta);
+
+        var jqxhr = $.post("mecab.py", query, function() {
+          //  alert( "success" );
+        })
+          .done(function(data) {
+            //    alert( "second success" );
+            //    console.log(data);
+
+            history = $("#history").html();
+            history +=
+              '<div class="row py-2">' +
+              '<div class="col-9 rounded" style="border: 1px solid #0000ff;">' +
+              data +
+              "<\/div>" +
+              '<div class="col-3"><\/div>' +
+              "<\/div>";
+            $("#history").html(history);
+
+            //$(window).scrollTop($("#mecab_bt").offset().top);
+          })
+          .fail(function() {
+            //    alert( "error" );
+          })
+          .always(function() {
+            //    alert( "finished" );
+          });
+
+        jqxhr.always(function() {
+          //  alert( "second finished" );
+        });
+      });
+      //]]>
+</script>
+
+<!--
+<div class="row">
+$shopping-items-2$
+</div>
+-->
+
+</main>
+
+<script>//<![CDATA[
+
+	function escape_html (string) {
+	  if(typeof string !== 'string') {
+	    return string;
+	  }
+	  return string.replace(/[&'`"<>]/g, function(match) {
+	   return {
+	      '&': '&amp;',
+	      "'": '&#x27;',
+	      '`': '&#x60;',
+	      '"': '&quot;',
+	      '<': '&lt;',
+	      '>': '&gt;',
+	    }[match]
+	  });
+	}
+
+	function trimingForm(parts) {
+		if( $('#' + parts).length ) {
+			var pval = $('#' + parts).val();
+			if( pval.length > 0 ){
+				pval = pval.trim();
+				$('#' + parts).val(pval.trim());
+			}
+		}
+	}
+
+//]]></script>
+
+  </body>
+</html>
